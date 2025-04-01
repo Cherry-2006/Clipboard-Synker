@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
                 receivedTextView.text = "❌ Please enter valid port numbers and IP address"
                 return@setOnClickListener
             }
-[l.]
             if (myPort < 1024 || targetPort < 1024) {
                 receivedTextView.text = "⚠️ Port must be 1024 or higher"
                 return@setOnClickListener
