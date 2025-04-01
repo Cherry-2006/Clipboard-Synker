@@ -1,12 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp" android:layout_marginTop="60dp">
 
-    <TextView
-        android:id="@+id/textView"
+    <EditText
+        android:id="@+id/yourPortEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello This is liki" />
+        android:hint="Enter your port (e.g., 9999)"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/targetIpEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter target IP (e.g., 192.168.1.2)"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/targetPortEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter target port (e.g., 8888)"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/startConnectionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Connection" />
+
+    <EditText
+        android:id="@+id/myEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter message to send"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Message"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/viewText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E0E0E0"
+        android:padding="8dp"
+        android:text="Received messages will appear here"
+        android:textSize="16sp" />
+
 </LinearLayout>
