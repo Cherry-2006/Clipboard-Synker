@@ -29,9 +29,10 @@ class MainActivity : ComponentActivity() {
 
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboardManager.addPrimaryClipChangedListener {
-            runOnUiThread { updateTextView() }
+            runOnUiThread { updateTextView() }  // Ensuring UI update on the main thread
         }
         updateTextView()
+
         startConnectionButton.setOnClickListener {
             val myPort = yourPortEditText.text.toString().toIntOrNull()
             val targetIP = targetIpEditText.text.toString()
@@ -45,14 +46,18 @@ class MainActivity : ComponentActivity() {
                 receivedTextView.text = "⚠️ Port must be 1024 or higher"
                 return@setOnClickListener
             }
+
             network = Network(myPort, targetIP, targetPort) { receivedMessage ->
                 runOnUiThread {
                     clipboardManager.setPrimaryClip(ClipData.newPlainText("Copied Text", receivedMessage))
+                    viewText.text = receivedMessage // Update UI with received message
                 }
             }
+
             receivedTextView.text = "✅ Connection Started on Port $myPort"
             sendButton.visibility = Button.VISIBLE
         }
+
         sendButton.setOnClickListener {
             val message = editText.text.toString()
             if (message.isNotEmpty()) {
@@ -60,11 +65,13 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
     private fun updateTextView() {
         val clip = clipboardManager.primaryClip
         if (clip != null && clip.itemCount > 0) {
             val copiedText = clip.getItemAt(0).text.toString()
-            network?.sendMessage(copiedText)
+            viewText.text = copiedText // Update the TextView with the clipboard content
+            network?.sendMessage(copiedText) // Send clipboard text over the network
         }
     }
 
