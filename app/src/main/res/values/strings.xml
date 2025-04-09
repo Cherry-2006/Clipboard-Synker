@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Clipboard Synker</string>
+    <string name="accessibility_service_description">Clipboard Synker Accessibility Service</string>
 </resources>
