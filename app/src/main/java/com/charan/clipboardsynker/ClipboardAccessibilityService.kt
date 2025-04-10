@@ -13,7 +13,7 @@ class ClipboardAccessibilityService : AccessibilityService() {
             val clip = clipboardManager.primaryClip
             val text = clip?.getItemAt(0)?.text?.toString()
             if (!text.isNullOrEmpty()) {
-                Log.d("ClipboardService", "Copied: $text")
+//                Log.d("ClipboardService", "Copied: $text")
                 MainActivity.latestClipboardText = text
             }
         }

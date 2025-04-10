@@ -1,5 +1,6 @@
 package com.charan.clipboardsynker
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
 import android.graphics.PixelFormat
@@ -12,6 +13,9 @@ import android.widget.*
 import androidx.activity.ComponentActivity
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Context
+import android.net.wifi.WifiManager
+
 
 class MainActivity : ComponentActivity() {
     private lateinit var clipboardManager: ClipboardManager
@@ -22,9 +26,22 @@ class MainActivity : ComponentActivity() {
         var latestClipboardText: String? = null // Shared by service
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        @SuppressLint("DefaultLocale")
+        fun getLocalIpAddress(): String {
+            val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val ip = wifiManager.connectionInfo.ipAddress
+            return String.format(
+                "%d.%d.%d.%d",
+                ip and 0xff,
+                ip shr 8 and 0xff,
+                ip shr 16 and 0xff,
+                ip shr 24 and 0xff
+            )
+        }
 
         val viewText = findViewById<TextView>(R.id.viewText)
         val yourPortEditText = findViewById<EditText>(R.id.yourPortEditText)
@@ -34,6 +51,7 @@ class MainActivity : ComponentActivity() {
         val editText = findViewById<EditText>(R.id.myEditText)
         val sendButton = findViewById<Button>(R.id.sendButton)
 
+        viewText.setText("Your IP address: "+getLocalIpAddress())
         clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
         startConnectionButton.setOnClickListener {
@@ -42,7 +60,7 @@ class MainActivity : ComponentActivity() {
             val targetPort = targetPortEditText.text.toString().toIntOrNull()
 
             if (myPort == null || targetPort == null || targetIP.isEmpty()) {
-                viewText.text = "❌ Invalid connection details"
+                viewText.text = "Invalid connection details"
                 return@setOnClickListener
             }
 
@@ -56,7 +74,7 @@ class MainActivity : ComponentActivity() {
                     }, 500)
                 }
             }
-            viewText.text = "✅ Connection Started"
+            viewText.text = "Connection Started"
             sendButton.visibility = View.VISIBLE
         }
 
@@ -76,24 +94,23 @@ class MainActivity : ComponentActivity() {
             if (clip != null && clip.itemCount > 0) {
                 val item = clip.getItemAt(0)
                 val text = item.text.toString()
-                editText.setText(text)
                 network?.sendMessage(text)
             }
         }
 
         showFloatingBubble()
 
-        // Start accessibility service
         val intent1 = Intent(this, ClipboardAccessibilityService::class.java)
         startService(intent1)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun showFloatingBubble() {
         val bubble = ImageView(this)
         bubble.setImageResource(android.R.drawable.presence_online)
 
         val layoutParams = WindowManager.LayoutParams(
-            150, 150,
+            80, 80,
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             else
@@ -111,7 +128,6 @@ class MainActivity : ComponentActivity() {
         val windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         windowManager.addView(bubble, layoutParams)
 
-        // Touch logic with click detection
         bubble.setOnTouchListener(object : View.OnTouchListener {
             private var initialX = 0
             private var initialY = 0
@@ -140,9 +156,9 @@ class MainActivity : ComponentActivity() {
                             val text = latestClipboardText
                             if (!text.isNullOrEmpty()) {
                                 network?.sendMessage(text)
-                                Toast.makeText(applicationContext, "📤 Sent: $text", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(applicationContext, "Sent: $text", Toast.LENGTH_SHORT).show()
                             } else {
-                                Toast.makeText(applicationContext, "⚠️ Clipboard is empty or inaccessible", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(applicationContext, "Clipboard is empty or inaccessible", Toast.LENGTH_SHORT).show()
                             }
                         }
                         return true

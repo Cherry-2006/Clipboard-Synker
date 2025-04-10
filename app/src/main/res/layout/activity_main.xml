@@ -4,6 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp" android:layout_marginTop="60dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Clipboard Synker"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textFontWeight="500"
+        android:layout_marginBottom="20sp"
+        />
+
 
     <EditText
         android:id="@+id/yourPortEditText"
@@ -54,5 +65,13 @@
         android:padding="8dp"
         android:text="Received messages will appear here"
         android:textSize="16sp" />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="24sp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_marginBottom="20sp"
+        />
 </LinearLayout>

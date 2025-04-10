@@ -51,16 +51,16 @@ class Network(
         thread {
             try {
                 val buffer = ByteArray(1024)
-                Log.d("Network", "📡 Listening for incoming messages on port $myPort...")
+//                Log.d("Network", "📡 Listening for incoming messages on port $myPort...")
                 while (true) {
                     val packet = DatagramPacket(buffer, buffer.size)
                     socket?.receive(packet)
                     val receivedText = String(packet.data, 0, packet.length)
-                    Log.d("Network", "📥 Received message: \"$receivedText\" from ${packet.address}:${packet.port}")
+//                    Log.d("Network", "📥 Received message: \"$receivedText\" from ${packet.address}:${packet.port}")
                     onMessageReceived(receivedText)
                 }
             } catch (e: Exception) {
-                Log.e("Network", "❌ Failed while listening: ${e.message}")
+//                Log.e("Network", "❌ Failed while listening: ${e.message}")
                 e.printStackTrace()
             }
         }
@@ -88,9 +88,9 @@ class Network(
                 val data = message.toByteArray()
                 val packet = DatagramPacket(data, data.size, address, targetPort)
                 socket?.send(packet)
-                Log.d("Network", "✅ Sent message: \"$message\" to $targetIP:$targetPort")
+//                Log.d("Network", "✅ Sent message: \"$message\" to $targetIP:$targetPort")
             } catch (e: Exception) {
-                Log.e("Network", "❌ Failed to send message: ${e.message}")
+//                Log.e("Network", "❌ Failed to send message: ${e.message}")
                 e.printStackTrace()
             }
         }
