@@ -18,7 +18,7 @@ class Network(
         thread {
             try {
                 if (myPort < 1024) {
-                    throw IllegalArgumentException("Port must be 1024 or higher")
+                    throw IllegalArgumentException("Port must be 1024 or higher"
                 }
                 socket = DatagramSocket(myPort)
                 startListening()
@@ -30,22 +30,6 @@ class Network(
 
     @Volatile
     private var isRunning = true
-
-//    private fun startListening() {
-//        thread {
-//            try {
-//                val buffer = ByteArray(1024)
-//                while (isRunning) {
-//                    val packet = DatagramPacket(buffer, buffer.size)
-//                    socket?.receive(packet)
-//                    val receivedText = String(packet.data, 0, packet.length)
-//                    onMessageReceived(receivedText)
-//                }
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//    }
 
     private fun startListening() {
         thread {
@@ -65,21 +49,6 @@ class Network(
             }
         }
     }
-
-
-
-//    fun sendMessage(message: String) {
-//        thread {
-//            try {
-//                val address = InetAddress.getByName(targetIP)
-//                val data = message.toByteArray()
-//                val packet = DatagramPacket(data, data.size, address, targetPort)
-//                socket?.send(packet)
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//    }
 
     fun sendMessage(message: String) {
         thread {
